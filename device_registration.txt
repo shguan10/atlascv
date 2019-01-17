@@ -1,0 +1,5 @@
+Hostname:	dunebug.res.local.cmu.edu
+IP address:	172.24.128.59
+MAC address:	00:04:4b:8d:6e:2c
+Network:	Morewood Gardens A-D Towers
+
