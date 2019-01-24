@@ -6,15 +6,32 @@ import keras.layers as KL
 import keras.engine as KE
 from keras import optimizers
 
-def main():
-  model = KM.Sequential()
-  model.add(KL.Dense(input_dim=10,units=10,kernel_initializer='glorot_uniform',activation='tanh'))
-  model.add(KL.Dense(units=10,kernel_initializer='glorot_uniform',activation='tanh'))
-  model.add(KL.Dense(units=1,kernel_initializer='glorot_uniform',activation='softmax'))
-  x_train = np.random.random((100,10))
-  y_train = np.random.random((100,1))
+import tensorflow as tf
 
-  model.compile(optimizer = 'sgd', loss = 'mean_squared_error',
+def main():
+  model = keras.Sequential([
+    keras.layers.Flatten(input_shape=(28, 28)),
+    keras.layers.Dense(128, activation=tf.nn.relu),
+    keras.layers.Dense(10, activation=tf.nn.softmax)
+  ])
+  
+  fashion_mnist = keras.datasets.fashion_mnist
+
+  (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+
+  print(x_train.shape)
+  print(x_test.shape)
+
+  print(y_train.shape)
+  print(y_test.shape)
+
+  x_train = x_train.astype('float32')
+  x_test = x_test.astype('float32')
+
+  x_train = x_train / 255.
+  x_test /= 255.
+
+  model.compile(optimizer = 'sgd', loss = 'sparse_categorical_crossentropy',
     metrics = ['accuracy'])
 
   save_cb = keras.callbacks.ModelCheckpoint("fake/weights.{epoch:02d}-{val_acc:.2f}.hdf5",
